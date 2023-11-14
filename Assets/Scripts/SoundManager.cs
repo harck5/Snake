@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public static class SoundManager 
 {
     public enum Sound
     {
@@ -28,7 +28,7 @@ public class SoundManager : MonoBehaviour
             Debug.LogError("Sound Manager already exists");
         }
     }
-
+    
     public static void PlaySound(Sound sound)
     {
         audioSource.PlayOneShot(GetAudioClipFromSound(sound));

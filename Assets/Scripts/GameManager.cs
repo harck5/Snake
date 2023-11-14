@@ -1,20 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public const int POINTS = 100; // Cantidad de puntos que ganamos al comer comida
-
-    private int score; // Puntuación del jugador
-    
     private LevelGrid levelGrid;
     private Snake snake;
 
-    private ScoreUI scoreUIScript;
+    private bool isPaused;
     
     private void Awake()
     {
@@ -25,11 +18,12 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
-        PauseUI.Instance.Hide();
     }
     
     private void Start()
     {
+        SoundManager.CreateSoundManagerGameObject();
+        
         // Configuración de la cabeza de serpiente
         GameObject snakeHeadGameObject = new GameObject("Snake Head");
         SpriteRenderer snakeSpriteRenderer = snakeHeadGameObject.AddComponent<SpriteRenderer>();
@@ -41,52 +35,49 @@ public class GameManager : MonoBehaviour
         snake.Setup(levelGrid);
         levelGrid.Setup(snake);
 
-        scoreUIScript = GetComponentInChildren<ScoreUI>();
-        score = 0;
-        AddScore(0);
+        // Inicializo tema score
+        Score.InitializeStaticScore();
+
+        isPaused = false;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        // if (Input.GetKeyDown(KeyCode.R))
+        // {
+        //     Loader.Load(Loader.Scene.Game);
+        // }
+        
+        // Lógica de Pause con tecla Escape
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Loader.Load(Loader.Scene.Game);
-        }
-        if (Input.GetKeyUp(KeyCode.Escape))
-        {
-            if(Time.timeScale == 1f)
-            {
-                PauseGame();
-            }
-            else
+            if (isPaused)
             {
                 ResumeGame();
             }
+            else
+            {
+                PauseGame();
+            }
         }
     }
 
-    public int GetScore()
+    public void SnakeDied()
     {
-        return score;
+        GameOverUI.Instance.Show(Score.TrySetNewHighScore());
     }
 
-    public void AddScore(int pointsToAdd)
-    {
-        score += pointsToAdd;
-        scoreUIScript.UpdateScoreText(score);
-    }
-    public void SnakeDies()
-    {
-        GameOverUI.Instance.Show();
-    }
-    public void ResumeGame()
-    {
-        Time.timeScale = 1f;
-        PauseUI.Instance.Hide();
-    }
     public void PauseGame()
     {
         Time.timeScale = 0f;
         PauseUI.Instance.Show();
+        isPaused = true;
+    }
+    
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        PauseUI.Instance.Hide();
+        isPaused = false;
     }
 }

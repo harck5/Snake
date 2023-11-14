@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Resources;
 using UnityEngine;
 
 public class Snake : MonoBehaviour
@@ -205,8 +202,8 @@ public class Snake : MonoBehaviour
         if (gridMoveTimer >= gridMoveTimerMax)
         {
             gridMoveTimer -= gridMoveTimerMax; // Se reinicia el temporizador
-
-            SoundManager.PlaySound(SoundManager.Sound.snakeMoveClip);
+            
+            SoundManager.PlaySound(SoundManager.Sound.SnakeMove);
             
             SnakeMovePosition previousSnakeMovePosition = null;
             if (snakeMovePositionsList.Count > 0)
@@ -261,7 +258,7 @@ public class Snake : MonoBehaviour
                 {
                     // GAME OVER
                     state = State.Dead;
-                    GameManager.Instance.SnakeDies();
+                    GameManager.Instance.SnakeDied();
                 }
             }
 

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +16,7 @@ public class PauseUI : MonoBehaviour
         }
 
         Instance = this;
-
+        
         resumeButton.onClick.AddListener(() =>
         {
             GameManager.Instance.ResumeGame();
@@ -29,7 +26,7 @@ public class PauseUI : MonoBehaviour
             Time.timeScale = 1f;
             Loader.Load(Loader.Scene.MainMenu);
         });
-
+        
         Hide();
     }
 
@@ -37,7 +34,7 @@ public class PauseUI : MonoBehaviour
     {
         gameObject.SetActive(true);
     }
-
+    
     public void Hide()
     {
         gameObject.SetActive(false);
