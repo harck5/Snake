@@ -2,9 +2,12 @@ using UnityEngine;
 
 public class LevelGrid
 {
-    private Vector2Int foodGridPosition;
-    private GameObject foodGameObject;
-    
+    private Vector2Int foodGridPosition, timeUpPosition, timeDownPosition;
+    private GameObject foodGameObject, timeUpGameObject, timeDownGameObject;        
+
+    private int xFoodGridPosition, yFoodGridPosition, xTimeUpPosition, yTimeUpPosition;
+
+
     private int width;
     private int height;
 
@@ -52,11 +55,23 @@ public class LevelGrid
                 Random.Range(-width / 2, width / 2),
                 Random.Range(-height / 2, height / 2));
         } while (snake.GetFullSnakeBodyGridPosition().IndexOf(foodGridPosition) != -1);
-        
+
+        xFoodGridPosition = foodGridPosition.x;
+        yFoodGridPosition = foodGridPosition.y;
+
+
         foodGameObject = new GameObject("Food");
+        timeUpGameObject = new GameObject("TimeUp");
+        timeDownGameObject = new GameObject("TimeDown");
+        
+
         SpriteRenderer foodSpriteRenderer = foodGameObject.AddComponent<SpriteRenderer>();
         foodSpriteRenderer.sprite = GameAssets.Instance.foodSprite;
+        SpriteRenderer timeUpSpriteRenderer = timeUpGameObject.AddComponent<SpriteRenderer>();
+        timeUpSpriteRenderer.sprite = GameAssets.Instance.timeUp;
+
         foodGameObject.transform.position = new Vector3(foodGridPosition.x, foodGridPosition.y, 0);
+        //timeDownGameObject.transform.position = new(foodGridPosition.x!, foodGridPosition.y!, 0);
     }
 
     public Vector2Int ValidateGridPosition(Vector2Int gridPosition)
