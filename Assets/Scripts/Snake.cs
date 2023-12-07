@@ -152,6 +152,9 @@ public class Snake : MonoBehaviour
     private float gridMoveTimer;
     private float gridMoveTimerMax = 0.5f; // La serpiente se moverá a cada segundo
 
+    public float timer = 0;
+    public float timerMax = 10;
+
     private LevelGrid levelGrid;
 
     private int snakeBodySize; // Cantidad de partes del cuerpo (sin cabeza)
@@ -188,6 +191,11 @@ public class Snake : MonoBehaviour
             case State.Dead:
                 break;
         }
+            bool snakeAteTimeUp = levelGrid.TrySnakeEatTimeUp(gridPosition);
+            if (snakeAteTimeUp)
+            {
+                TimeUpPowerUp();
+            }
     }
 
     public void Setup(LevelGrid levelGrid)
@@ -245,6 +253,7 @@ public class Snake : MonoBehaviour
                 CreateBodyPart();
             }
             
+
             if (snakeMovePositionsList.Count > snakeBodySize)
             {
                 snakeMovePositionsList.
@@ -349,6 +358,14 @@ public class Snake : MonoBehaviour
         for (int i = 0; i < snakeBodyPartsList.Count; i++)
         {
             snakeBodyPartsList[i].SetMovePosition(snakeMovePositionsList[i]);
+        }
+    }
+    public void TimeUpPowerUp()
+    {
+        timer += Time.deltaTime;
+        if (timer >= timerMax)
+        {
+            timer -= timerMax;
         }
     }
 }
