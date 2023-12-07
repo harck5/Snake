@@ -46,6 +46,10 @@ public class LevelGrid
         {
             Object.Destroy(timeUpGameObject);
             SpawnTimeUp();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 30f4c265b0c5b5c0b4be0e3e1c1c3e5750b690b2
             return true;
         }
         else
@@ -82,6 +86,35 @@ public class LevelGrid
         foodGameObject.transform.position = new Vector3(foodGridPosition.x, foodGridPosition.y, 0);
         
         //timeDownGameObject.transform.position = new(foodGridPosition.x!, foodGridPosition.y!, 0);
+<<<<<<< HEAD
+=======
+    }
+    private void SpawnTimeUp()
+    {
+        do
+        {
+            timeUpGridPosition = new Vector2Int(
+                Random.Range(-width / 2, width / 2),
+                Random.Range(-height / 2, height / 2));
+        } while (snake.GetFullSnakeBodyGridPosition().IndexOf(timeUpGridPosition) != -1) ;
+        
+        timeUpGameObject = new GameObject("TimeUp");
+        
+        SpriteRenderer timeUpSpriteRenderer = timeUpGameObject.AddComponent<SpriteRenderer>();
+        timeUpSpriteRenderer.sprite = GameAssets.Instance.timeUp;
+
+        timeUpGameObject.transform.position = new Vector3(timeUpGridPosition.x, timeUpGridPosition.y, 0);
+    }
+    public void TimeUpPowerUp(float timer=0, float timerMax = 10)
+    {
+        timer += Time.deltaTime;
+        if (timer >= timerMax)
+        {
+            Time.timeScale = 1.5f;
+            timer -= timerMax;
+            Time.timeScale = 1f;            
+        }
+>>>>>>> 30f4c265b0c5b5c0b4be0e3e1c1c3e5750b690b2
     }
     private void SpawnTimeUp()
     {
