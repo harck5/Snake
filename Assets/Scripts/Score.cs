@@ -4,7 +4,9 @@ using UnityEngine;
 public static class Score
 {
     public const string HIGH_SCORE = "highScore"; // Clave en PlayerPrefs
-    public const int POINTS = 100; // Cantidad de puntos que ganamos al comer comida
+    public const int FOODPOINTS = 100; // Cantidad de puntos que ganamos al comer comida
+    public const int TIMEUPPOINTS = 250; // Cantidad de puntos que ganamos al comer timeup
+    public const int TIMEDOWNPOINTS = 50; // Cantidad de puntos que ganamos al comer timedown
 
     public static event EventHandler OnHighScoreChange;
 

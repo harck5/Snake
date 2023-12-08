@@ -4,7 +4,6 @@ using UnityEngine;
 public class GameAssets : MonoBehaviour
 {
     [Serializable]
-    
     public class SoundAudioClip
     {
         public SoundManager.Sound sound;
@@ -15,10 +14,10 @@ public class GameAssets : MonoBehaviour
 
     public Sprite snakeHeadSprite;
     public Sprite snakeBodySprite;
+    
     public Sprite foodSprite;
-
-    public Sprite timeUp;
-    public Sprite timeDown;
+    public Sprite timeUpSprite;
+    public Sprite timeDownSprite;
 
     public SoundAudioClip[] soundAudioClipsArray;
 

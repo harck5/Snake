@@ -2535,8 +2535,8 @@ MonoBehaviour:
   snakeHeadSprite: {fileID: 21300000, guid: cb0dda71d17e14a5397dd937d9b48cf9, type: 3}
   snakeBodySprite: {fileID: 21300000, guid: 3f7bca037e73b403abcaf55f02ca25f9, type: 3}
   foodSprite: {fileID: 21300000, guid: fab1cffb3db1d41cc82e8300b33e7777, type: 3}
-  timeUp: {fileID: 21300000, guid: 5f026c7b481474448bfc58d2f494e06f, type: 3}
-  timeDown: {fileID: 21300000, guid: 061c7d98cd0c3aa418bc0fdd2c4f9ac4, type: 3}
+  timeUpSprite: {fileID: 21300000, guid: 5f026c7b481474448bfc58d2f494e06f, type: 3}
+  timeDownSprite: {fileID: 21300000, guid: 061c7d98cd0c3aa418bc0fdd2c4f9ac4, type: 3}
   soundAudioClipsArray:
   - sound: 0
     audioClip: {fileID: 8300000, guid: 287714c74120797488f2baa3f148324a, type: 3}

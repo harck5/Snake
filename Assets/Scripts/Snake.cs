@@ -152,9 +152,6 @@ public class Snake : MonoBehaviour
     private float gridMoveTimer;
     private float gridMoveTimerMax = 0.5f; // La serpiente se moverá a cada segundo
 
-    public float timer = 0;
-    public float timerMax = 10;
-
     private LevelGrid levelGrid;
 
     private int snakeBodySize; // Cantidad de partes del cuerpo (sin cabeza)
@@ -191,11 +188,6 @@ public class Snake : MonoBehaviour
             case State.Dead:
                 break;
         }
-            bool snakeAteTimeUp = levelGrid.TrySnakeEatTimeUp(gridPosition);
-            if (snakeAteTimeUp)
-            {
-                TimeUpPowerUp();
-            }
     }
 
     public void Setup(LevelGrid levelGrid)
@@ -243,7 +235,7 @@ public class Snake : MonoBehaviour
             
             gridPosition += gridMoveDirectionVector; // Mueve la posición 2D de la cabeza de la serpiente
             gridPosition = levelGrid.ValidateGridPosition(gridPosition);
-            
+
             // ¿He comido comida?
             bool snakeAteFood = levelGrid.TrySnakeEatFood(gridPosition);
             if (snakeAteFood)
@@ -252,7 +244,42 @@ public class Snake : MonoBehaviour
                 snakeBodySize++;
                 CreateBodyPart();
             }
-            
+            bool snakeAteTimeUp = levelGrid.TrySnakeEatTimeUp(gridPosition);
+            if (snakeAteTimeUp)
+            {
+                // El cuerpo crece
+                snakeBodySize++;
+                CreateBodyPart();
+                if (Pruebas.isSpeedUp)
+                {
+
+                    StopCoroutine(Pruebas.TimeUpCoroutine());
+                    StartCoroutine(Pruebas.TimeUpCoroutine());
+                }
+                else
+                {
+                    StartCoroutine(Pruebas.TimeUpCoroutine());
+                }
+            }
+
+            bool snakeAteTimeDown = levelGrid.TrySnakeEatTimeDown(gridPosition);
+            if (snakeAteTimeDown)
+            {
+                // El cuerpo crece
+                snakeBodySize++;
+                CreateBodyPart();
+                if (PowerUp.isSlowed)
+                {
+                    StopCoroutine(PowerUp.TimeDownCoroutine());
+                    Debug.Log("REINICIA");
+                    StartCoroutine(PowerUp.TimeDownCoroutine());
+                    Debug.Log("INICIA");
+                }
+                else
+                {
+                    StartCoroutine(PowerUp.TimeDownCoroutine());
+                }
+            }
 
             if (snakeMovePositionsList.Count > snakeBodySize)
             {
@@ -358,14 +385,6 @@ public class Snake : MonoBehaviour
         for (int i = 0; i < snakeBodyPartsList.Count; i++)
         {
             snakeBodyPartsList[i].SetMovePosition(snakeMovePositionsList[i]);
-        }
-    }
-    public void TimeUpPowerUp()
-    {
-        timer += Time.deltaTime;
-        if (timer >= timerMax)
-        {
-            timer -= timerMax;
         }
     }
 }

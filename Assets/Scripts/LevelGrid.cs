@@ -3,11 +3,8 @@ using UnityEngine;
 public class LevelGrid
 {
     private Vector2Int foodGridPosition, timeUpGridPosition, timeDownGridPosition;
-    private GameObject foodGameObject, timeUpGameObject, timeDownGameObject;        
-
-    private int xFoodGridPosition, yFoodGridPosition, xTimeUpPosition, yTimeUpPosition;
-
-
+    private GameObject foodGameObject, timeUpGameObject, timeDownGameObject;
+    
     private int width;
     private int height;
 
@@ -24,6 +21,7 @@ public class LevelGrid
         this.snake = snake;
         SpawnFood();
         SpawnTimeUp();
+        SpawnTimeDown();
     }
 
     public bool TrySnakeEatFood(Vector2Int snakeGridPosition)
@@ -32,7 +30,7 @@ public class LevelGrid
         {
             Object.Destroy(foodGameObject);
             SpawnFood();
-            Score.AddScore(Score.POINTS);
+            Score.AddScore(Score.FOODPOINTS);
             return true;
         }
         else
@@ -46,10 +44,21 @@ public class LevelGrid
         {
             Object.Destroy(timeUpGameObject);
             SpawnTimeUp();
-<<<<<<< HEAD
-=======
-
->>>>>>> 30f4c265b0c5b5c0b4be0e3e1c1c3e5750b690b2
+            Score.AddScore(Score.TIMEUPPOINTS);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public bool TrySnakeEatTimeDown(Vector2Int snakeGridPosition)
+    {
+        if (snakeGridPosition == timeDownGridPosition)
+        {
+            Object.Destroy(timeDownGameObject);
+            SpawnTimeDown();
+            Score.AddScore(Score.TIMEDOWNPOINTS);
             return true;
         }
         else
@@ -72,23 +81,17 @@ public class LevelGrid
             foodGridPosition = new Vector2Int(
                 Random.Range(-width / 2, width / 2),
                 Random.Range(-height / 2, height / 2));
-        } while (snake.GetFullSnakeBodyGridPosition().IndexOf(foodGridPosition) != -1);
+        } while (snake.GetFullSnakeBodyGridPosition().IndexOf(foodGridPosition) != -1 || 
+        foodGridPosition == timeUpGridPosition || foodGridPosition == timeDownGridPosition);
+        //While, a parte de tener en cuenta la lista de posiciones del cuerpo tambien tendra en cuenta la posicion de las demas frutas para que no coincidan
         
         foodGameObject = new GameObject("Food");
-        
-        timeDownGameObject = new GameObject("TimeDown");
-        
-
         SpriteRenderer foodSpriteRenderer = foodGameObject.AddComponent<SpriteRenderer>();
         foodSpriteRenderer.sprite = GameAssets.Instance.foodSprite;
-        
-
         foodGameObject.transform.position = new Vector3(foodGridPosition.x, foodGridPosition.y, 0);
-        
-        //timeDownGameObject.transform.position = new(foodGridPosition.x!, foodGridPosition.y!, 0);
-<<<<<<< HEAD
-=======
     }
+
+
     private void SpawnTimeUp()
     {
         do
@@ -96,43 +99,31 @@ public class LevelGrid
             timeUpGridPosition = new Vector2Int(
                 Random.Range(-width / 2, width / 2),
                 Random.Range(-height / 2, height / 2));
-        } while (snake.GetFullSnakeBodyGridPosition().IndexOf(timeUpGridPosition) != -1) ;
-        
-        timeUpGameObject = new GameObject("TimeUp");
-        
-        SpriteRenderer timeUpSpriteRenderer = timeUpGameObject.AddComponent<SpriteRenderer>();
-        timeUpSpriteRenderer.sprite = GameAssets.Instance.timeUp;
+        } while (snake.GetFullSnakeBodyGridPosition().IndexOf(timeUpGridPosition) != -1 ||
+        timeUpGridPosition == foodGridPosition || timeUpGridPosition == timeDownGridPosition);
 
+        timeUpGameObject = new GameObject("TimeUp");
+        SpriteRenderer timeUpSpriteRenderer = timeUpGameObject.AddComponent<SpriteRenderer>();
+        timeUpSpriteRenderer.sprite = GameAssets.Instance.timeUpSprite;
         timeUpGameObject.transform.position = new Vector3(timeUpGridPosition.x, timeUpGridPosition.y, 0);
     }
-    public void TimeUpPowerUp(float timer=0, float timerMax = 10)
-    {
-        timer += Time.deltaTime;
-        if (timer >= timerMax)
-        {
-            Time.timeScale = 1.5f;
-            timer -= timerMax;
-            Time.timeScale = 1f;            
-        }
->>>>>>> 30f4c265b0c5b5c0b4be0e3e1c1c3e5750b690b2
-    }
-    private void SpawnTimeUp()
+
+
+    private void SpawnTimeDown()
     {
         do
         {
-            timeUpGridPosition = new Vector2Int(
+            timeDownGridPosition = new Vector2Int(
                 Random.Range(-width / 2, width / 2),
                 Random.Range(-height / 2, height / 2));
-        } while (snake.GetFullSnakeBodyGridPosition().IndexOf(timeUpGridPosition) != -1) ;
-        
-        timeUpGameObject = new GameObject("TimeUp");
-        
-        SpriteRenderer timeUpSpriteRenderer = timeUpGameObject.AddComponent<SpriteRenderer>();
-        timeUpSpriteRenderer.sprite = GameAssets.Instance.timeUp;
+        } while (snake.GetFullSnakeBodyGridPosition().IndexOf(timeDownGridPosition) != -1 ||
+        timeDownGridPosition == foodGridPosition || timeDownGridPosition == timeUpGridPosition);
 
-        timeUpGameObject.transform.position = new Vector3(timeUpGridPosition.x, timeUpGridPosition.y, 0);
+        timeDownGameObject = new GameObject("TimeDown");
+        SpriteRenderer timeDownSpriteRenderer = timeDownGameObject.AddComponent<SpriteRenderer>();
+        timeDownSpriteRenderer.sprite = GameAssets.Instance.timeDownSprite;
+        timeDownGameObject.transform.position = new Vector3(timeDownGridPosition.x, timeDownGridPosition.y, 0);
     }
-    
 
     public Vector2Int ValidateGridPosition(Vector2Int gridPosition)
     {
@@ -163,9 +154,5 @@ public class LevelGrid
     private int Half(int number)
     {
         return number / 2;
-    }
-    private void TimeUp(float time = 0.50f, float timer = 10)
-    {
-        Time.timeScale = time;
     }
 }
