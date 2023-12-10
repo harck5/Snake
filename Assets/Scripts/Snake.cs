@@ -159,9 +159,13 @@ public class Snake : MonoBehaviour
     private List<SnakeBodyPart> snakeBodyPartsList;
 
     private State state;
-    
+    //Variables para PowerUps
+    private bool isSpeedUp;
+    private bool isSpeedDown;
+    private float startTime;
+
     #endregion
-    
+
     private void Awake()
     {
         startGridPosition = new Vector2Int(0, 0);
@@ -187,6 +191,18 @@ public class Snake : MonoBehaviour
                 break;
             case State.Dead:
                 break;
+        }
+        if (isSpeedDown && Time.time >= startTime + 2.5f) // Comprobar si han pasado 5 segundos
+        {
+            Time.timeScale = 1f; // Volver al tiempo normal después de 5 segundos
+            isSpeedUp = false;
+            isSpeedDown = false;
+        }
+        if (isSpeedUp && Time.time >= startTime + 10f) // Comprobar si han pasado 5 segundos
+        {
+            Time.timeScale = 1f; // Volver al tiempo normal después de 5 segundos
+            isSpeedUp = false;
+            isSpeedDown = false;
         }
     }
 
@@ -250,16 +266,7 @@ public class Snake : MonoBehaviour
                 // El cuerpo crece
                 snakeBodySize++;
                 CreateBodyPart();
-                if (Pruebas.isSpeedUp)
-                {
-
-                    StopCoroutine(Pruebas.TimeUpCoroutine());
-                    StartCoroutine(Pruebas.TimeUpCoroutine());
-                }
-                else
-                {
-                    StartCoroutine(Pruebas.TimeUpCoroutine());
-                }
+                TimeUpEffect();
             }
 
             bool snakeAteTimeDown = levelGrid.TrySnakeEatTimeDown(gridPosition);
@@ -268,17 +275,7 @@ public class Snake : MonoBehaviour
                 // El cuerpo crece
                 snakeBodySize++;
                 CreateBodyPart();
-                if (PowerUp.isSlowed)
-                {
-                    StopCoroutine(PowerUp.TimeDownCoroutine());
-                    Debug.Log("REINICIA");
-                    StartCoroutine(PowerUp.TimeDownCoroutine());
-                    Debug.Log("INICIA");
-                }
-                else
-                {
-                    StartCoroutine(PowerUp.TimeDownCoroutine());
-                }
+                TimeDownEffect();
             }
 
             if (snakeMovePositionsList.Count > snakeBodySize)
@@ -386,5 +383,18 @@ public class Snake : MonoBehaviour
         {
             snakeBodyPartsList[i].SetMovePosition(snakeMovePositionsList[i]);
         }
+    }
+
+    public void TimeUpEffect()
+    {
+        Time.timeScale = 2f; // Acelerar el juego
+        isSpeedUp = true;
+        startTime = Time.time; // Guardar el tiempo actual
+    }
+    public void TimeDownEffect()
+    {
+        Time.timeScale = 0.5f; // Acelerar el juego
+        isSpeedDown = true;
+        startTime = Time.time; // Guardar el tiempo actual
     }
 }
