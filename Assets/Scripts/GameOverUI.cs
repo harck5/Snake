@@ -22,7 +22,7 @@ public class GameOverUI : MonoBehaviour
 
         Instance = this;
         
-        restartButton.onClick.AddListener(() => {Loader.Load(Loader.Scene.Game);});
+        restartButton.onClick.AddListener(() => {Loader.Load(Loader.Scene.Game);Time.timeScale = 1f;});
 
         Hide();
     }
