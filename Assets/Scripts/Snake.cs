@@ -159,6 +159,7 @@ public class Snake : MonoBehaviour
     private List<SnakeBodyPart> snakeBodyPartsList;
 
     private State state;
+
     //Variables para PowerUps
     private bool isSpeedUp;
     private bool isSpeedDown;
@@ -195,14 +196,12 @@ public class Snake : MonoBehaviour
         if (isSpeedDown && Time.time >= startTime + 2.5f) // Comprobar si han pasado 5 segundos
         {
             Time.timeScale = 1f; // Volver al tiempo normal después de 5 segundos
-            isSpeedUp = false;
             isSpeedDown = false;
         }
         if (isSpeedUp && Time.time >= startTime + 10f) // Comprobar si han pasado 5 segundos
         {
             Time.timeScale = 1f; // Volver al tiempo normal después de 5 segundos
             isSpeedUp = false;
-            isSpeedDown = false;
         }
     }
 
